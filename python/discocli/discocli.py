@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+### python3 compatibility
+from __future__ import print_function # stderr
+try: input = raw_input
+except NameError: pass
+
 import sys
 import inspect
 
@@ -46,7 +51,7 @@ class term(object):
 
         # Run in interactive mode
         while True:
-            line = raw_input(self.prompt())
+            line = input(self.prompt())
             self.run_line(self.parse_input(line))
 
     '''
@@ -54,7 +59,7 @@ class term(object):
     '''
     def run_line(self, tokens):
         self.dbprint("Tokens:",tokens)
-        print ""
+        print("")
 
         if len(tokens) == 0:
             self.dbprint("No command, running default action...")
@@ -74,7 +79,7 @@ class term(object):
             self.dbprint("Command '{0}' doesn't exist in current context '{1}', running invalid action...".format(command, self.context))
             self.commands['system']['invalid_action']['run'](self,tokens)
 
-        print ""
+        print("")
 
     '''
     add_item - Adds a menu item to a context
@@ -100,32 +105,32 @@ class term(object):
     default_help_action - Display help for current context
     '''
     def default_help_action(self, tokens):
-        print "Help for:",self.context,"\n"
+        print("Help for:",self.context,"\n")
         for command in self.commands[self.context]:
             if not self.commands[self.context][command]['hidden']:
-                print command,'-',self.commands[self.context][command]['desc']
-        print "\nGlobal commands:\n"
+                print(command,'-',self.commands[self.context][command]['desc'])
+        print("\nGlobal commands:\n")
         for command in self.commands['system']:
             if not self.commands['system'][command]['hidden']:
-                print command,'-',self.commands['system'][command]['desc']
+                print(command,'-',self.commands['system'][command]['desc'])
 
     '''
     default_default_action - Do nothing
     '''
     def default_default_action(self, tokens):
-        print ""
+        print("")
 
     '''
     default_invalid_action - Whine
     '''
     def default_invalid_action(self, tokens):
-        print "Unknown command:",tokens[0]
+        print("Unknown command:",tokens[0])
 
     '''
     default_exit_action - Exit
     '''
     def default_exit_action(self, tokens):
-        print "Exiting..."
+        print("Exiting...")
         exit(0);
 
     ### Utility functions Which may be useful to override
@@ -147,4 +152,4 @@ class term(object):
             output = '{0}:'.format(inspect.stack()[1][3])
             for arg in args:
                 output = '{0} {1}'.format(output, arg)
-            print >> sys.stderr, output
+            print(output, file=sys.stderr)

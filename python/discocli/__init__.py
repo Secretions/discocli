@@ -2,4 +2,4 @@
 
 __version__ = '0.0.1'
 
-from discocli import term
+from .discocli import term
