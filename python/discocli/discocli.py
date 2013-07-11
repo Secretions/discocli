@@ -97,6 +97,7 @@ class term(object):
                 self.commands[context][alias]['hidden'] = True
                 self.commands[context][alias]['alias'] = name
                 self.commands[context][alias]['run'] = self.commands[context][name]['run']
+                self.commands[context][alias]['desc'] = 'Alias for {0}'.format(name)
 
 
     ### Basic Default Actions
@@ -109,10 +110,14 @@ class term(object):
         for command in self.commands[self.context]:
             if not self.commands[self.context][command]['hidden']:
                 print(command,'-',self.commands[self.context][command]['desc'])
+            else:
+                self.dbprint(command,'-',self.commands[self.context][command]['desc'])
         print("\nGlobal commands:\n")
         for command in self.commands['system']:
             if not self.commands['system'][command]['hidden']:
                 print(command,'-',self.commands['system'][command]['desc'])
+            else:
+                self.dbprint(command,'-',self.commands['system'][command]['desc'])
 
     '''
     default_default_action - Do nothing
