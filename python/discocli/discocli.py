@@ -23,10 +23,20 @@ except ImportError:
 class term(object):
     "DiscoCLI Terminal Object"
 
-    def __init__(self, name='> ', context='default', debug=False, **kwargs):
+    ''' discocli.term() init:
+         - name: Program name
+         - context: default context
+         - prompt_text: Prompt (defaults to program name)
+         - prompt_context: Display context in prompt
+         - debug: Show hidden items in help
+    '''
+    def __init__(self, name='CLI', context='default', debug=False, prompt_text=False, prompt_context=True, **kwargs):
         self.name = name
         self.context = context
         self.debug = debug
+        if prompt_text: self.prompt_text = prompt_text
+        else: self.prompt_text = name
+        self.prompt_context = prompt_context
         self.commands = {}
         self.commands['default'] = {}
 
@@ -149,7 +159,10 @@ class term(object):
     prompt() - Returns prompt for current context
     '''
     def prompt(self):
-        return '{0} [{1}]> '.format(self.name, self.context)
+        if self.prompt_context:
+            return '{0} [{1}]> '.format(self.prompt_text, self.context)
+        else:
+            return '{0}> '.format(self.prompt_text)
 
     ### Helper functions
     def dbprint(self, *args):
